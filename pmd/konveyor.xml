@@ -77,7 +77,7 @@ and should be marked with @Delegate or @InterfaceClass"
    matches(@Image,'[A-Z][a-z0-9]*Interface$') or
    matches(@Image,'[A-Z][a-z0-9]*Service$') or
    matches(@Image,'[A-Z][a-z0-9]*Controller$') or
-   matches(@Image,'[A-Z][a-z0-9]*Utils$') or
+   matches(@Image,'[A-Z][a-z0-9]*Util$') or
    matches(@Image,'[A-Z][a-z0-9]*Test$') or
    matches(@Image,'[A-Z][a-z0-9]*TestBase$') or
    matches(@Image,'[A-Z][a-z0-9]*TestData$') or
