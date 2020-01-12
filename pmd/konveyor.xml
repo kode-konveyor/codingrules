@@ -229,7 +229,7 @@ see message
 <![CDATA[
 //ClassOrInterfaceDeclaration[ends-with(@Image,'Util')]/(
     //MethodDeclaration//Literal[not(
-        (@IntLiteral=true() and @ValueAsInt &lt; 2) or
+    (@IntLiteral=true() and @ValueAsInt < 2) or
         BooleanLiteral or
         NullLiteral)]|
     .[ExtendsList]|
