@@ -214,4 +214,34 @@ see message
    </properties>
 </rule>
 
+<rule name="UtilRules"
+      language="java"
+      message="All static methods, at least one public. No literals, no extend, no public fields"
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Util')]/(
+    //MethodDeclaration//Literal[not(
+        (@IntLiteral=true() and @ValueAsInt &lt; 2) or
+        BooleanLiteral or
+        NullLiteral)]|
+    .[ExtendsList]|
+    //MethodDeclaration[@Static = false()]|
+    //FieldDeclaration[@Private = false()]
+) |
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Util') and not(descendant::MethodDeclaration[@Public = true()])]
+
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+
 </ruleset>
