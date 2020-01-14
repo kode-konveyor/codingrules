@@ -243,5 +243,63 @@ see message
       </property>
    </properties>
 </rule>
+<rule name="ControllerRules"
+      language="java"
+      message="A Controller should have controller annotation, package private fields, a call method with mapping annotation and no constants"
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Controller')]/(
+//MethodDeclaration[@Private=false() and not(starts-with(MethodDeclarator/@Image,'call'))]|
+//FieldDeclaration[@Static=true() or @PackagePrivate=false()]|
+.[count(../Annotation/*/Name[@Image = 'RestController']) != 1]|
+.[count(//Annotation[
+    ends-with(./*/Name/@Image,'Mapping') and
+    following-sibling::MethodDeclaration[starts-with(MethodDeclarator/@Image,'call')]
+  ]) = 0]|
+//MethodDeclaration//Literal[not(
+(@IntLiteral=true() and @ValueAsInt < 2) or
+        BooleanLiteral or
+        NullLiteral)]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="Service"
+      language="java"
+      message="A service should have a @Service annotation, a call method, no private or static fields and no constants"
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Service')]/(
+//MethodDeclaration[@Private=false() and MethodDeclarator/@Image != 'call']|
+//FieldDeclaration[@Static=true() or @Private=false()]|
+.[count(../Annotation/*/Name/@Image = 'Service') != 1]|
+//MethodDeclaration//Literal[not(
+        (@IntLiteral=true() and @ValueAsInt < 2) or
+        BooleanLiteral or
+        NullLiteral)]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
 
 </ruleset>
