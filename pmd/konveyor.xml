@@ -122,9 +122,31 @@ MethodDeclarator[not(matches(@Image,'^[a-z][a-zA-Z0-9]*$'))]
       </property>
    </properties>
 </rule>
-<rule name="TestDataRules"
+<rule name="TestDataRulesStaticFinal"
       language="java"
-      message="TestData units should contain static final SCREAMING_SNAKE_CASE, public static final getters and lists"
+      message="TestData units should contain static final fields only."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+see message
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[matches(@Image,'TestData$')]/(
+//FieldDeclaration[
+    @Static = false() or @Final = false()
+])
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="TestDataStaticFinalScreamingSnake"
+      language="java"
+      message="TestData units should contain SCREAMING_SNAKE_CASE or *TestData field names."
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 see message
@@ -140,9 +162,27 @@ see message
     not(
         matches(VariableDeclarator/VariableDeclaratorId/@Image,'^[A-Z0-9_]*$') or
         matches(VariableDeclarator/VariableDeclaratorId/@Image,'^[a-z0-9_]*TestData$')
-    ) or
-    @Static = false()
-]|
+    )
+])
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="TestDataRulesGetters"
+      language="java"
+      message="TestData units should contain public static final getters and lists."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+see message
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[matches(@Image,'TestData$')]/(
 //MethodDeclaration[
     not(matches(MethodDeclarator/@Image,'^get[a-zA-z]*$') or
     	matches(MethodDeclarator/@Image,'^list[a-zA-z]*$')) or
@@ -179,9 +219,9 @@ see message
    </properties>
 </rule>
 
-<rule name="TestRules"
+<rule name="TestRulesAnnotations"
       language="java"
-      message="A Test class should have the standard annotations, extend a TestBase, and have no literals, constants or stubs"
+      message="A Test class should have the standard annotations."
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 
@@ -193,20 +233,54 @@ see message
          <value>
 <![CDATA[
 //ClassOrInterfaceDeclaration[ends-with(@Image,'Test')]/(
-    //MethodDeclaration//Literal[not(
-        (@IntLiteral=true() and @ValueAsInt < 2) or
-        ../../../../../../../PrimaryPrefix/Name/@Image='times' or
-        BooleanLiteral or
-        NullLiteral)]|
-    .[not(ExtendsList)]|
-    .[not(ExtendsList/ClassOrInterfaceType[ends-with(@Image,'TestBase')])]|
     .[not(../Annotation//Name[@Image='TestedService'])]|
     .[not(../Annotation//Name[@Image='TestedBehaviour'])]|
     .[not(../Annotation//Name[@Image='RunWith'])]|
     .[not(../Annotation//Name[@Image='MockitoSettings'])]|
-    .[not(../Annotation//Name[@Image='ExtendWith'])]|
-    //PrimaryPrefix/Name[@Image='doReturn' or @Image='doThrow']|
-    //FieldDeclaration[@Static = true()]
+    .[not(../Annotation//Name[@Image='ExtendWith'])]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="TestRulesTestBase"
+      language="java"
+      message="A Test class should extend a TestBase."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Test')]/(
+    .[not(ExtendsList)]|
+    .[not(ExtendsList/ClassOrInterfaceType[ends-with(@Image,'TestBase')])]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="TestRulesNoStub"
+      language="java"
+      message="A Test class should have no stubs."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Test')]/(
+    //PrimaryPrefix/Name[@Image='doReturn' or @Image='doThrow']
 )
 ]]>
          </value>
@@ -214,9 +288,9 @@ see message
    </properties>
 </rule>
 
-<rule name="UtilRules"
+<rule name="UtilRulesStaticMethods"
       language="java"
-      message="All static methods, at least one public. No literals, no extend, no public fields"
+      message="All methods of a Util must be static."
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 
@@ -228,14 +302,26 @@ see message
          <value>
 <![CDATA[
 //ClassOrInterfaceDeclaration[ends-with(@Image,'Util')]/(
-    //MethodDeclaration//Literal[not(
-    (@IntLiteral=true() and @ValueAsInt < 2) or
-        BooleanLiteral or
-        NullLiteral)]|
-    .[ExtendsList]|
-    //MethodDeclaration[@Static = false()]|
-    //FieldDeclaration[@Private = false()]
-) |
+    //MethodDeclaration[@Static = false()]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="UtilRulesPublicMethod"
+      language="java"
+      message="Utils must have at least one public method."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
 //ClassOrInterfaceDeclaration[ends-with(@Image,'Util') and not(descendant::MethodDeclaration[@Public = true()])]
 
 ]]>
@@ -243,9 +329,52 @@ see message
       </property>
    </properties>
 </rule>
-<rule name="ControllerRules"
+<rule name="UtilRulesPrivateField"
       language="java"
-      message="A Controller should have controller annotation, package private fields, a call method with mapping annotation and no constants"
+      message="Utils should have private fields only."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Util')]/(
+    //FieldDeclaration[@Private = false()]
+) 
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="UtilRulesNoExtend"
+      language="java"
+      message="Utils should have no superclass."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Util')]/(
+    .[ExtendsList]
+) 
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+
+<rule name="ControllerRestControllerAnnotation"
+      language="java"
+      message="A Controller should have @RestController annotation."
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 
@@ -257,26 +386,135 @@ see message
          <value>
 <![CDATA[
 //ClassOrInterfaceDeclaration[ends-with(@Image,'Controller')]/(
-//MethodDeclaration[@Private=false() and not(starts-with(MethodDeclarator/@Image,'call'))]|
-//FieldDeclaration[@Static=true() or @PackagePrivate=false()]|
-.[count(../Annotation/*/Name[@Image = 'RestController']) != 1]|
-.[count(//Annotation[
-    ends-with(./*/Name/@Image,'Mapping') and
-    following-sibling::MethodDeclaration[starts-with(MethodDeclarator/@Image,'call')]
-  ]) = 0]|
-//MethodDeclaration//Literal[not(
-(@IntLiteral=true() and @ValueAsInt < 2) or
-        BooleanLiteral or
-        NullLiteral)]
+.[count(../Annotation/*/Name[@Image = 'RestController']) != 1]
 )
 ]]>
          </value>
       </property>
    </properties>
 </rule>
-<rule name="Service"
+<rule name="ControllerCallMethodMappingAnnotation"
       language="java"
-      message="A service should have a @Service annotation, a call method, no private or static fields and no constants"
+      message="A Controller should have a public call method with mapping annotation."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Controller')]/(
+.[count(//Annotation[
+    ends-with(./*/Name/@Image,'Mapping') and
+    following-sibling::MethodDeclaration[@Private=false() and starts-with(MethodDeclarator/@Image,'call')]
+  ]) = 0]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="NoPublicButCall"
+      language="java"
+      message="A Controller or Service should not have other public method than 'call'."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Controller') or ends-with(@Image,'Service')]/(
+//MethodDeclaration[@Private=false() and not(starts-with(MethodDeclarator/@Image,'call'))]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="NoStatic"
+      language="java"
+      message="A Test, Controller or Service should not have static fields."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Controller') or
+                              ends-with(@Image,'Test') or
+                              ends-with(@Image,'Service')]/(
+                                 //FieldDeclaration[@Static=true()]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="ControllerPackagePrivateFields"
+      language="java"
+      message="A Controller should have package private fields."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Controller')]/(
+//FieldDeclaration[@PackagePrivate=false()]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="NoLiterals"
+      language="java"
+      message="Only the following literals are accepted: 0, 1, true, false and null."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration/(
+//MethodDeclaration//Literal[not(
+  (
+   (@IntLiteral=true() or
+     @LongLiteral=true() or
+     @FloatLiteral=true() or
+     @DoubleLiteral=true()) and
+   @ValueAsInt = 0 or @ValueAsInt = 1) or
+  BooleanLiteral or
+  NullLiteral)]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+
+<rule name="ServicePrivateFields"
+      language="java"
+      message="A Service should have private fields only."
       class="net.sourceforge.pmd.lang.rule.XPathRule">
    <description>
 
@@ -288,13 +526,49 @@ see message
          <value>
 <![CDATA[
 //ClassOrInterfaceDeclaration[ends-with(@Image,'Service')]/(
-//MethodDeclaration[@Private=false() and MethodDeclarator/@Image != 'call']|
-//FieldDeclaration[@Static=true() or @Private=false()]|
-.[count(../Annotation/*/Name/@Image = 'Service') != 1]|
-//MethodDeclaration//Literal[not(
-        (@IntLiteral=true() and @ValueAsInt < 2) or
-        BooleanLiteral or
-        NullLiteral)]
+//FieldDeclaration[@Private=false()]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="ServiceCallMethodRules"
+      language="java"
+      message="A Service should have a public call method."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Service')]/(
+.[count(//MethodDeclaration[@Private=false() and starts-with(MethodDeclarator/@Image,'call')]) = 0]
+)
+]]>
+         </value>
+      </property>
+   </properties>
+</rule>
+<rule name="ServiceAnnotation"
+      language="java"
+      message="A Service should have a @Service annotation."
+      class="net.sourceforge.pmd.lang.rule.XPathRule">
+   <description>
+
+   </description>
+   <priority>3</priority>
+   <properties>
+      <property name="version" value="2.0"/>
+      <property name="xpath">
+         <value>
+<![CDATA[
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Service')]/(
+.[count(../Annotation/*/Name/@Image = 'Service') != 1]
 )
 ]]>
          </value>
