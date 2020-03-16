@@ -9,6 +9,7 @@
 		<exclude name="JUnitTestsShouldIncludeAssert" />
 		<exclude name="UseAssertTrueInsteadOfAssertEquals" />
 		<exclude name="UseAssertNullInsteadOfAssertTrue" />
+		<exclude name="GuardLogStatement" />
 	</rule>
 	<rule ref="category/java/codestyle.xml">
 		<exclude name="AvoidFinalLocalVariable" />
@@ -88,7 +89,6 @@
 		</properties>
 	</rule>
 	<rule ref="category/java/bestpractices.xml/UnusedImports">
-		<exclude name="GuardLogStatement" />
 		<properties>
 			<property name="violationSuppressRegex"
 				value="^import static.*\*$" />
