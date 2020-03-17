@@ -9,6 +9,7 @@
 		<exclude name="JUnitTestsShouldIncludeAssert" />
 		<exclude name="UseAssertTrueInsteadOfAssertEquals" />
 		<exclude name="UseAssertNullInsteadOfAssertTrue" />
+		<exclude name="GuardLogStatement" />
 	</rule>
 	<rule ref="category/java/codestyle.xml">
 		<exclude name="AvoidFinalLocalVariable" />
@@ -63,6 +64,7 @@
 	<rule ref="category/java/errorprone.xml">
 		<exclude name="BeanMembersShouldSerialize" />
 		<exclude name="DataflowAnomalyAnalysis" />
+		<exclude name="LoggerIsNotStaticFinal" />
 	</rule>
 	<rule ref="category/java/multithreading.xml" />
 	<rule ref="category/java/performance.xml" />
