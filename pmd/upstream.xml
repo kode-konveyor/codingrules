@@ -55,7 +55,7 @@
 			<property name="publicMethodCommentRequirement"
 				value="Unwanted" />
 			<property name="fieldCommentRequirement" value="Unwanted" />
-			<property name="headerCommentRequirement" value="Unwanted" />
+			<property name="classCommentRequirement" value="Unwanted" />
 			<property name="methodWithOverrideCommentRequirement"
 				value="Unwanted" />
 			<property name="accessorCommentRequirement" value="Unwanted" />
