@@ -29,6 +29,7 @@
 		<exclude name="TooManyStaticImports" />
 	</rule>
 	<rule ref="category/java/design.xml">
+		<exclude name="MutableStaticState" />
 		<exclude name="LawOfDemeter" />
 		<exclude name="FinalFieldCouldBeStatic" />
 		<exclude name="LoosePackageCoupling" />
@@ -65,6 +66,7 @@
 		<exclude name="BeanMembersShouldSerialize" />
 		<exclude name="DataflowAnomalyAnalysis" />
 		<exclude name="LoggerIsNotStaticFinal" />
+		<exclude name="MoreThanOneLogger" />
 	</rule>
 	<rule ref="category/java/multithreading.xml" />
 	<rule ref="category/java/performance.xml" />
