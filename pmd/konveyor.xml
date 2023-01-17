@@ -45,10 +45,10 @@ public interface Matrix<KeyType extends Serializable, ValueType extends Serializ
   not(
     .//Name[matches(@Image,'assert')] or
     .//Name[matches(@Image,'verify')] or
+    .//PrimarySuffix[matches(@Image,'checkText')] or
     .//PrimarySuffix[matches(@Image,'andExpect')]
   )
 ]
-
 ]]>
             </value>
 			</property>
