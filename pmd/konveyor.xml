@@ -504,8 +504,22 @@ see message
      @DoubleLiteral=true()) and
    @ValueAsInt = 0 or @ValueAsInt = 1) or
   BooleanLiteral or
-  NullLiteral)]
+  NullLiteral)][not(ancestor::PrimarySuffix[(preceding-sibling::*)[1][
+(
+    matches(@Image,'checkText') or
+    matches(@Image,'goToPage') or
+    matches(@Image,'enter') or
+    matches(@Image,'click')
+) or
+Name[(
+    matches(@Image,'checkText') or
+    matches(@Image,'goToPage') or
+    matches(@Image,'enter') or
+    matches(@Image,'click')
+)]
+]])]
 )
+
 ]]>
          </value>
       </property>
