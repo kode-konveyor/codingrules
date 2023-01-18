@@ -257,7 +257,7 @@ see message
       <property name="xpath">
          <value>
 <![CDATA[
-//ClassOrInterfaceDeclaration[ends-with(@Image,'Test')]/(
+//ClassOrInterfaceDeclaration[ends-with(@Image,'Test') and not(ends-with(@Image,'SanitizerTest'))]/(
     .[not(ExtendsList)]|
     .[not(ExtendsList/ClassOrInterfaceType[ends-with(@Image,'TestBase')])]
 )
